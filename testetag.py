@@ -10,10 +10,10 @@ grid = [[5,3,0,0,7,0,0,0,0],
 
 class Sudoku():
 	def __init__(self, grid):
+		self.grid = grid
+		self.all_vertices = []
 		self.adj = []
 		self.valid = True
-		self.all_vertices = []
-		self.grid = grid
 
 	def add_vertices(self):
 		for i in range(9):
@@ -34,12 +34,12 @@ class Sudoku():
 				# row
 				for k in range(9):
 					if (k != j):
-						self.adj[counter].append(self.grid[i][k])
+						self.adj[counter].append(9*i + k)
 
 				# columns
 				for k in range(9):
 					if (k != i):
-						self.adj[counter].append(self.grid[k][j])
+						self.adj[counter].append(9*k + j)
 
 				# square
 				# print(counter)
@@ -55,7 +55,7 @@ class Sudoku():
 				for a in range(square_i, square_i + 3):
 					for b in range(square_j, square_j + 3):
 						if (i != a) and (j != b):
-							self.adj[counter].append(self.grid[a][b])
+							self.adj[counter].append(9*a + b)
 
 				counter += 1
 
@@ -74,12 +74,27 @@ class Sudoku():
 
 		return self.valid
 
-	def solve():
-		pass
+	'''def solve():
+		# colors = ['yellow', 'green', 'blue', 'purple', 'pink', 'orange', 'cyan', 'gray', 'red']
+
+		for i in range(81):
+			if self.all_vertices[i] == 0:
+				list_of_unique_colors = []
+
+			    unique_colors = set(self.adj[i])
+
+			    for color in unique_colors:
+			        list_of_unique_colors.append(color)
+
+			     for c in range(1, 9):
+			     	if c not in list_of_unique_colors:'''
+
+
+
 
 sudoku = Sudoku(grid)
 sudoku.add_vertices()
 adj = sudoku.build_adjacency()
 valid = sudoku.is_valid()
 
-print(valid)
+print(adj)
