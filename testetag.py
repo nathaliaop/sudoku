@@ -9,33 +9,20 @@ grid = [[5,3,0,0,7,0,0,0,0],
         [0,0,0,0,0,0,0,0,0]]
 
 class Sudoku():
-	def __init__(self):
+	def __init__(self, grid):
 		self.adj = []
 		self.valid = True
 		self.all_vertices = []
+		self.grid = grid
 
-	def add_vertices(self, grid):
+	def add_vertices(self):
 		for i in range(9):
 			for j in range(9):
-				self.all_vertices.append(grid[i][j])
+				self.all_vertices.append(self.grid[i][j])
 
 		return self.all_vertices
 
-	def is_valid(self, adj):
-		# confere se os valor dos vértices são menores ou iguais a 9
-		for vertex in self.all_vertices:
-			if (vertex < 0) or (vertex > 9):
-				self.valid = False
-
-		for i in range(81):
-			for k in range(1,9):
-				if (adj[i].count(self.all_vertices[i]) > 1 and self.all_vertices[i] != 0):
-					self.valid = False
-
-		return self.valid
-
-
-	def build_adjacency(self, grid):
+	def build_adjacency(self):
 		for i in range(81):
 			self.adj.append([])
 
@@ -47,12 +34,12 @@ class Sudoku():
 				# row
 				for k in range(9):
 					if (k != j):
-						self.adj[counter].append(grid[i][k])
+						self.adj[counter].append(self.grid[i][k])
 
 				# columns
 				for k in range(9):
 					if (k != i):
-						self.adj[counter].append(grid[k][j])
+						self.adj[counter].append(self.grid[k][j])
 
 				# square
 				# print(counter)
@@ -68,15 +55,31 @@ class Sudoku():
 				for a in range(square_i, square_i + 3):
 					for b in range(square_j, square_j + 3):
 						if (i != a) and (j != b):
-							self.adj[counter].append(grid[a][b])
+							self.adj[counter].append(self.grid[a][b])
 
 				counter += 1
 
 		return self.adj
 
-sudoku = Sudoku()
-sudoku.add_vertices(grid)
-adj = sudoku.build_adjacency(grid)
-valid = sudoku.is_valid(adj)
+	def is_valid(self):
+		# confere se os valor dos vértices são menores ou iguais a 9
+		for vertex in self.all_vertices:
+			if (vertex < 0) or (vertex > 9):
+				self.valid = False
+
+		for i in range(81):
+			for k in range(1,9):
+				if (self.adj[i].count(self.all_vertices[i]) > 1 and self.all_vertices[i] != 0):
+					self.valid = False
+
+		return self.valid
+
+	def solve():
+		pass
+
+sudoku = Sudoku(grid)
+sudoku.add_vertices()
+adj = sudoku.build_adjacency()
+valid = sudoku.is_valid()
 
 print(valid)
