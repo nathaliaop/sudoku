@@ -11,16 +11,17 @@ grid = [[5,3,0,0,7,0,0,0,0],
 class Sudoku():
 	def __init__(self, grid):
 		self.grid = grid
-		self.all_vertices = []
+		self.vertices_colors = []
 		self.adj = []
 		self.valid = True
+		self.found = False
 
 	def add_vertices(self):
 		for i in range(9):
 			for j in range(9):
-				self.all_vertices.append(self.grid[i][j])
+				self.vertices_colors.append(self.grid[i][j])
 
-		return self.all_vertices
+		return self.vertices_colors
 
 	def build_adjacency(self):
 		for i in range(81):
@@ -63,38 +64,49 @@ class Sudoku():
 
 	def is_valid(self):
 		# confere se os valor dos vértices são menores ou iguais a 9
-		for vertex in self.all_vertices:
+		for vertex in self.vertices_colors:
 			if (vertex < 0) or (vertex > 9):
 				self.valid = False
 
 		for i in range(81):
 			for k in range(1,9):
-				if (self.adj[i].count(self.all_vertices[i]) > 1 and self.all_vertices[i] != 0):
+				if (self.adj[i].count(self.vertices_colors[i]) > 1 and self.vertices_colors[i] != 0):
 					self.valid = False
 
 		return self.valid
 
-	'''def solve():
-		# colors = ['yellow', 'green', 'blue', 'purple', 'pink', 'orange', 'cyan', 'gray', 'red']
+	def color(self, x):
+			if x >= 81:
+				self.found = True
+				# resposta
+				return
 
+			if self.vertices_colors[x] != 0:
+				self.color(x + 1)
+				return
+
+			neighbours_colors = list(set([self.vertices_colors[k] for k in self.adj[x]]))
+			total_colors = [i for i in range(1, 10)]
+			available_colors = [item for item in total_colors if item not in neighbours_colors]
+
+			for c in available_colors:
+				self.vertices_colors[x] = c
+				self.color(x + 1)
+
+				if self.found:
+					return
+
+				self.vertices_colors[x] = 0
+
+	def build_grid(self):
 		for i in range(81):
-			if self.all_vertices[i] == 0:
-				list_of_unique_colors = []
+			self.grid[i//9][i%9] = self.vertices_colors[i]
 
-			    unique_colors = set(self.adj[i])
-
-			    for color in unique_colors:
-			        list_of_unique_colors.append(color)
-
-			     for c in range(1, 9):
-			     	if c not in list_of_unique_colors:'''
-
-
-
+		return self.grid
 
 sudoku = Sudoku(grid)
 sudoku.add_vertices()
 adj = sudoku.build_adjacency()
 valid = sudoku.is_valid()
-
-print(adj)
+sudoku.color(0)
+print(sudoku.build_grid())
