@@ -1,17 +1,68 @@
 from random import shuffle, randint
+import turtle
 
-grid = [[5,3,0,0,7,0,0,0,0],
-        [6,0,0,1,9,5,0,0,0],
-        [0,9,8,0,0,0,0,6,0],
-        [8,0,0,0,6,0,0,0,3],
-        [4,0,0,8,0,3,0,0,1],
-        [7,0,0,0,2,0,0,0,6],
-        [0,6,0,0,0,0,2,8,0],
-        [0,0,0,0,1,9,0,0,5],
-        [0,0,0,0,0,0,0,0,0]]
+# Mostra o sudoku na tela
+myPen = turtle.Turtle()
+myPen._tracer(0)
+myPen.speed(0)
+myPen.color("#000000")
+myPen.hideturtle()
+topLeft_x = -150
+topLeft_y = 150
 
-grid2 = [
-        [8, 0, 0, 1, 5, 0, 6, 0, 0],
+def text(message,x,y,size):
+    FONT = ('Arial', size, 'normal')
+    myPen.penup()
+    myPen.goto(x,y)    		  
+    myPen.write(message,align="left",font=FONT)
+
+def drawGrid(lista):
+  intDim=35
+
+  # prepara as fileiras
+  for row in range(0,10):
+
+    if (row%3)==0:
+      myPen.pensize(3)
+
+    else:
+      myPen.pensize(1)
+
+    myPen.penup()
+    myPen.goto(topLeft_x,topLeft_y-row*intDim)
+    myPen.pendown()
+    myPen.goto(topLeft_x+9*intDim,topLeft_y-row*intDim)
+
+  # prepara as colunas
+  for col in range(0,10):
+
+    if (col%3)==0:
+      myPen.pensize(3)
+    else:
+      myPen.pensize(1)  
+
+    myPen.penup()
+    myPen.goto(topLeft_x+col*intDim,topLeft_y)
+    myPen.pendown()
+    myPen.goto(topLeft_x+col*intDim,topLeft_y-9*intDim)
+
+  # desenha o sudoku
+  for row in range (0,9):
+      for col in range (0,9):
+        if lista[row*col]!=0:
+          text(lista[row*col],topLeft_x+col*intDim+9,topLeft_y-row*intDim-intDim+8,18)
+
+grid = [[5, 3, 0, 0, 7, 0, 0, 0, 0],
+        [6, 0, 0, 1, 9, 5, 0, 0, 0],
+        [0, 9, 8, 0, 0, 0, 0, 6, 0],
+        [8, 0, 0, 0, 6, 0, 0, 0, 3],
+        [4, 0, 0, 8, 0, 3, 0, 0, 1],
+        [7, 0, 0, 0, 2, 0, 0, 0, 6],
+        [0, 6, 0, 0, 0, 0, 2, 8, 0],
+        [0, 0, 0, 0, 1, 9, 0, 0, 5],
+        [0, 0, 0, 0, 0, 0, 0, 0, 0]]
+
+grid2 = [[8, 0, 0, 1, 5, 0, 6, 0, 0],
         [0, 0, 0, 3, 0, 0, 0, 4, 1],
         [5, 0, 0, 0, 0, 0, 7, 0, 0],
         [0, 0, 0, 0, 0, 9, 0, 6, 2],
@@ -19,11 +70,9 @@ grid2 = [
         [1, 4, 0, 8, 0, 0, 0, 0, 0],
         [0, 0, 8, 0, 0, 0, 0, 0, 9],
         [2, 9, 0, 0, 0, 1, 0, 0, 0],
-        [0, 0, 5, 0, 9, 7, 0, 0, 6],
-    ]
+        [0, 0, 5, 0, 9, 7, 0, 0, 6]]
 
-grid3 = [
-	[0, 0, 0, 1, 5, 0, 6, 0, 0],
+grid3 = [[0, 0, 0, 1, 5, 0, 6, 0, 0],
 	[0, 0, 0, 3, 0, 0, 0, 4, 1],
 	[0, 0, 0, 0, 0, 0, 7, 0, 0],
 	[0, 0, 0, 0, 0, 9, 0, 6, 2],
@@ -31,8 +80,7 @@ grid3 = [
 	[0, 0, 0, 8, 0, 0, 0, 0, 0],
 	[0, 0, 0, 0, 0, 0, 0, 0, 9],
 	[2, 9, 0, 0, 0, 1, 0, 0, 0],
-	[0, 0, 0, 0, 0, 7, 0, 0, 6],
-]
+	[0, 0, 0, 0, 0, 7, 0, 0, 6]]
 
 class Sudoku():
 	def __init__(self, grid):
@@ -96,6 +144,8 @@ class Sudoku():
 		return self.valid
 
 	def color(self, x):
+			drawGrid(sudoku.vertices_colors) 
+			myPen.getscreen().update()
 			if x >= 81:
 				self.found = True
 				return
@@ -117,6 +167,7 @@ class Sudoku():
 					return
 
 				self.vertices_colors[x] = 0
+				myPen.clear()
 
 	def build_grid(self):
 		for i in range(81):
@@ -142,9 +193,14 @@ class Sudoku():
 
 sudoku = Sudoku(grid)
 sudoku.add_vertices()
-adj = sudoku.build_adjacency()
-valid = sudoku.is_valid()
+sudoku.build_adjacency()
 sudoku.color(0)
+
+# mostra se o sudoku é válido
 print(sudoku.is_valid())
+
+# mostra a solução do sudoku
 print(sudoku.build_grid())
+
+# gera uma solução aleatória
 print(sudoku.random_sudoku())
