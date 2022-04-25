@@ -49,8 +49,8 @@ def drawGrid(lista):
   # desenha o sudoku
   for row in range (0,9):
       for col in range (0,9):
-        if lista[row*col]!=0:
-          text(lista[row*col],topLeft_x+col*intDim+9,topLeft_y-row*intDim-intDim+8,18)
+        if lista[row*9+col]!=0:
+          text(lista[row*9+col],topLeft_x+col*intDim+9,topLeft_y-row*intDim-intDim+8,18)
 
 grid = [[5, 3, 0, 0, 7, 0, 0, 0, 0],
         [6, 0, 0, 1, 9, 5, 0, 0, 0],
