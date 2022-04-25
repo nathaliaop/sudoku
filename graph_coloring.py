@@ -10,7 +10,6 @@ grid = [[5,3,0,0,7,0,0,0,0],
         [0,0,0,0,1,9,0,0,5],
         [0,0,0,0,0,0,0,0,0]]
 
-
 grid2 = [
         [8, 0, 0, 1, 5, 0, 6, 0, 0],
         [0, 0, 0, 3, 0, 0, 0, 4, 1],
@@ -88,6 +87,7 @@ class Sudoku():
 			if (vertex < 0) or (vertex > 9):
 				self.valid = False
 
+		# confere os números 
 		for i in range(81):
 			for k in range(1,9):
 				if (self.adj[i].count(self.vertices_colors[i]) > 1 and self.vertices_colors[i] != 0):
@@ -145,5 +145,6 @@ sudoku.add_vertices()
 adj = sudoku.build_adjacency()
 valid = sudoku.is_valid()
 sudoku.color(0)
+print(sudoku.is_valid())
 print(sudoku.build_grid())
 print(sudoku.random_sudoku())
